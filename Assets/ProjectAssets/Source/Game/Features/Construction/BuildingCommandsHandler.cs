@@ -6,11 +6,11 @@ using VContainer.Unity;
 
 namespace Game.Features.Construction
 {
-    public sealed class BuildingConstructionPresenter : IInitializable, IDisposable
+    public sealed class BuildingCommandsHandler : IInitializable, IDisposable
     {
         private readonly IDisposable disposables;
 
-        public BuildingConstructionPresenter
+        public BuildingCommandsHandler
         (
             IBuildingConstructionService constructionService,
             ISubscriber<ConstructBuildingCommand> constructBuildingSubscriber,
@@ -18,12 +18,15 @@ namespace Game.Features.Construction
         )
         {
             var disposablesBuilder = DisposableBag.CreateBuilder();
+
             constructBuildingSubscriber
                 .Subscribe(command => constructionService.TryConstructBuilding(command.BuildingId, command.Position))
                 .AddTo(disposablesBuilder);
+
             destroyBuildingSubscriber
                 .Subscribe(command => constructionService.DestroyBuilding(command.Building))
                 .AddTo(disposablesBuilder);
+
             disposables = disposablesBuilder.Build();
         }
         

@@ -19,11 +19,11 @@ MonoBehaviour:
     MaxProjectileHitCount: 1
   ProjectilesRenderer:
     rid: 7058138136372576515
-  ProjectilesModifiers:
-  - rid: 7058138462007328853
-  - rid: 7058138462007328854
-  - rid: 7058138136372576516
-  - rid: 7058138136372576517
+  ProjectileProcessors:
+  - rid: 7058138477142736981
+  - rid: 7058138477142736982
+  - rid: 7058138477142736983
+  - rid: 7058138477142736984
   references:
     version: 2
     RefIds:
@@ -31,22 +31,22 @@ MonoBehaviour:
       type: {class: ParticleSystemProjectilesRenderer, ns: Game.Features.Projectiles.Renderers, asm: Game.Features.Projectiles}
       data:
         ParticleSystemPrefab: {fileID: 2926387547952847402, guid: 26cd443f495b65546a9a2abf5f1fcc82, type: 3}
-    - rid: 7058138136372576516
-      type: {class: ProjectilesCellChangeEventBehaviour, ns: Game.Features.Projectiles.Behaviours, asm: Game.Features.Projectiles}
+    - rid: 7058138477142736981
+      type: {class: ProjectileSinusoidalTrajectoryProcessor, ns: Game.Features.Projectiles.Processors, asm: Game.Features.Projectiles}
+      data:
+        Amplitude: 15
+        Frequency: 10
+    - rid: 7058138477142736982
+      type: {class: ProjectileNoiseTrajectoryProcessor, ns: Game.Features.Projectiles.Processors, asm: Game.Features.Projectiles}
+      data:
+        NoiseAmplitude: 15
+        NoiseFrequency: 10
+    - rid: 7058138477142736983
+      type: {class: ProjectileCellChangeEventProcessor, ns: Game.Features.Projectiles.Processors, asm: Game.Features.Projectiles}
       data: 
-    - rid: 7058138136372576517
-      type: {class: ProjectilesHitBehaviour, ns: Game.Features.Projectiles.Behaviours, asm: Game.Features.Projectiles}
+    - rid: 7058138477142736984
+      type: {class: ProjectileHitProcessor, ns: Game.Features.Projectiles.Processors, asm: Game.Features.Projectiles}
       data:
         DamageableLayers:
           serializedVersion: 2
           m_Bits: 128
-    - rid: 7058138462007328853
-      type: {class: ProjectileSinusoidalTrajectoryBehaviour, ns: Game.Features.Projectiles.Behaviours, asm: Game.Features.Projectiles}
-      data:
-        Amplitude: 15
-        Frequency: 10
-    - rid: 7058138462007328854
-      type: {class: ProjectileNoiseTrajectoryBehaviour, ns: Game.Features.Projectiles.Behaviours, asm: Game.Features.Projectiles}
-      data:
-        NoiseAmplitude: 15
-        NoiseFrequency: 10

@@ -5,7 +5,7 @@ using Game.Core.Entities.Messages;
 using MessagePipe;
 using VContainer.Unity;
 
-namespace Game.Features.Construction
+namespace Game.Features.Buildings
 {
     public sealed class BuildingDestructionHandler : IInitializable, IDisposable
     {
@@ -14,7 +14,7 @@ namespace Game.Features.Construction
         public BuildingDestructionHandler(IBuildingConstructionService constructionService, ISubscriber<EntityKilledMessage> killedMessageSubscriber)
         {
             var disposablesBuilder = DisposableBag.CreateBuilder();
-            //Handle destroyed by damage etc
+            //Handle destruction from damage etc
             killedMessageSubscriber
                 .Subscribe(message =>
                 {

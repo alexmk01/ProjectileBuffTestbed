@@ -27,6 +27,7 @@ namespace Game.Features.Interaction
         private readonly IPublisher<int, DisableBuildingBehaviourCommand> disableBuildingBehaviourPublisher;
         private readonly IDisposable disposables;
         private int lastPointerCellIndex;
+        private bool isBuildingConstructionModeActive;
         private IEntity dragCandidateBuilding;
         private IEntity draggingBuilding;
         private Vector2 dragStartPosition;
@@ -35,6 +36,12 @@ namespace Game.Features.Interaction
         
         private void UpdateDrag(Vector2 worldPointerPosition)
         {
+            if (isBuildingConstructionModeActive)
+            {
+                ResetDragCandidateState();
+                return;
+            }
+            
             if (draggingBuilding == null)
             {
                 int pointerCellIndex = mapService.GetCellIndex(worldPointerPosition);
@@ -129,6 +136,8 @@ namespace Game.Features.Interaction
             IBuildingRepository buildingRepository,
             ISubscriber<PlayerPointerMoveMessage> pointerMoveSubscriber,
             ISubscriber<EntityDragEndedMessage> entityDragEndedSubscriber,
+            ISubscriber<StartBuildingConstructionModeCommand> startBuildingConstructionModeSubscriber,
+            ISubscriber<CompleteBuildingConstructionModeCommand> completeBuildingConstructionModeSubscriber,
             IPublisher<EntityDragStartedMessage> entityDragStartedPublisher,
             IPublisher<EntityDragUpdatedMessage> entityDragUpdatedPublisher,
             IPublisher<EntityDragCandidateChangedMessage> entityDragCandidateChangedPublisher,
@@ -154,6 +163,14 @@ namespace Game.Features.Interaction
                 .Subscribe(_ => EndDrag())
                 .AddTo(disposableBuilder);
 
+            startBuildingConstructionModeSubscriber
+                .Subscribe(_ => isBuildingConstructionModeActive = true)
+                .AddTo(disposableBuilder);
+            
+            completeBuildingConstructionModeSubscriber
+                .Subscribe(_ => isBuildingConstructionModeActive = false)
+                .AddTo(disposableBuilder);
+
             disposables = disposableBuilder.Build();
             ResetDragCandidateState();
         }
@@ -175,7 +192,7 @@ namespace Game.Features.Interaction
                 UpdateDrag(request.WorldPointerPosition);
                 return new StartEntityDragResponse(draggingBuilding, true);
             }
-
+            
             return new StartEntityDragResponse(null, false);
         }
     }

@@ -27,10 +27,11 @@ namespace Game.Features.HitPoints.VFX
                     {
                         if (((Component)message.Entity).TryGetComponent(out SpriteRenderer renderer))
                         {
-                            LMotion.Create(renderer.color, DamageEffectColor, DamageEffectDuration)
+                            LMotion.Create(Color.white, DamageEffectColor, DamageEffectDuration)
                                 .WithLoops(2, LoopType.Yoyo)
                                 .WithEase(Ease.InOutQuad)
-                                .Bind(color => renderer.color = color);
+                                .Bind(renderer, (color, renderer) => renderer.color = color)
+                                .AddTo(renderer.gameObject);
                         }
                     }
                 })

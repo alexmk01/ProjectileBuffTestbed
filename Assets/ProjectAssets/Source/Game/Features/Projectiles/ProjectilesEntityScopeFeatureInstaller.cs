@@ -17,7 +17,7 @@ namespace Game.Features.Projectiles
                 {
                     var projectileEmitter = resolver.Resolve<ProjectileEmitter>();
                     IProjectilesRenderer renderer = projectileEmitter.ProjectilesRenderer;
-                    IReadOnlyList<IProjectilesBehaviour> behaviours = projectileEmitter.ProjectilesBehaviours;
+                    IReadOnlyList<IProjectileProcessor> behaviours = projectileEmitter.ProjectileProcessors;
                     if (renderer != null) resolver.Inject(renderer);
                     
                     for (int i = 0; i < behaviours.Count; i++)

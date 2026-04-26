@@ -2,6 +2,7 @@ using System;
 using Common.Unity;
 using Game.Core.BuildingBehaviour.Messages;
 using Game.Features.BuildingBehaviour.Behaviours;
+using Game.Infrastructure;
 using Game.Infrastructure.UI;
 using MessagePipe;
 using UnityEngine;
@@ -17,8 +18,8 @@ namespace Game.Features.BuildingBehaviour.UI
         {
             return behaviourData switch
             {
-                ModifyProjectileDamageBuildingBehaviour.Data => $"+{effectAmount} Damage",
-                ModifyProjectileHitCountBuildingBehaviour.Data => $"+{effectAmount} Pierce",
+                ModifyProjectileDamageBuildingBehaviour.Data => $"{effectAmount.FormatAmount()} Damage",
+                ModifyProjectileHitCountBuildingBehaviour.Data => $"{effectAmount.FormatAmount()} Pierce",
                 CloneProjectileBuildingBehaviour.Data => $"Cloned",
                 _ => string.Empty,
             };

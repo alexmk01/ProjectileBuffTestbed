@@ -7,6 +7,6 @@ namespace Game.Core.Projectiles
     {
         public ProjectileEmitter.Parameters EmitterParameters;
         public IProjectilesRenderer ProjectilesRenderer;
-        public IProjectilesBehaviour[] ProjectilesBehaviours;
+        public IProjectileProcessor[] ProjectileProcessors;
     }
 }

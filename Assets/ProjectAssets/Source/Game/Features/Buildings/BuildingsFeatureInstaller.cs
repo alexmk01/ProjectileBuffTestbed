@@ -27,6 +27,7 @@ namespace Game.Features.Buildings
                 .WithParameter(parentScope)
                 .WithParameter(buildingScopeInstallers)
                 .WithParameter(buildingsData);
+            builder.RegisterEntryPoint<BuildingDestructionHandler>();
         }
     }
 }

@@ -5,10 +5,10 @@ using Game.Core.Projectiles.Events;
 using MessagePipe;
 using VContainer;
 
-namespace Game.Features.Projectiles.Behaviours
+namespace Game.Features.Projectiles.Processors
 {
     [Serializable]
-    public sealed class ProjectilesCellChangeEventBehaviour : IProjectilesBehaviour
+    public sealed class ProjectileCellChangeEventProcessor : IProjectileProcessor
     {
         private IGameMapService gameMapService;
         private IPublisher<ProjectileCellChangedMessage> cellChangedMessagePublisher;
@@ -22,12 +22,13 @@ namespace Game.Features.Projectiles.Behaviours
             this.cellChangedMessagePublisher = cellChangedMessagePublisher;
         }
         
-        public object Clone() => new ProjectilesCellChangeEventBehaviour();
+        public object Clone() => new ProjectileCellChangeEventProcessor();
 
         public void Initialize(ProjectileEmitter emitter)
         {
             projectileEmitter = emitter;
             projectileCellIndices = new int[64];
+            emitter.AddProjectileProcessor(new ProjectileAdditionalDataSyncProcessor<int>(projectileCellIndices, -1));
         }
 
         public void ModifyProjectiles(Span<Projectile> projectiles, float time, float deltaTime)
@@ -45,23 +46,13 @@ namespace Game.Features.Projectiles.Behaviours
                 }
             }
         }
-        //TODO: implement additional data synchronizator as IProjectilesBehaviour
+
         public void OnNewProjectilesLaunched(int startIndex, int endIndex, Span<Projectile> projectiles)
         {
-            if (projectiles.Length > projectileCellIndices.Length)
-            {
-                Array.Resize(ref projectileCellIndices, (int)(projectiles.Length * 1.5f));
-            }
-
-            for (int i = startIndex; i <= endIndex; i++)
-            {
-                projectileCellIndices[i] = -1;
-            }
         }
-
+        
         public void OnProjectileIndexChanged(int lastIndex, int newIndex, Span<Projectile> projectiles)
         {
-            projectileCellIndices[newIndex] = projectileCellIndices[lastIndex];
         }
         
         public void OnProjectileDestroyed(int projectileIndex, Span<Projectile> projectiles)

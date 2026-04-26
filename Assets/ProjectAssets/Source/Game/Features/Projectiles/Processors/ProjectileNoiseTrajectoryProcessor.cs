@@ -3,23 +3,23 @@ using Game.Core.Projectiles;
 using UnityEngine;
 using Vector2 = System.Numerics.Vector2;
 
-namespace Game.Features.Projectiles.Behaviours
+namespace Game.Features.Projectiles.Processors
 {
     [Serializable]
-    public sealed class ProjectileSinusoidalTrajectoryBehaviour : IProjectilesBehaviour
+    public sealed class ProjectileNoiseTrajectoryProcessor : IProjectileProcessor
     {
-        public float Amplitude = 15f;
-        public float Frequency = 10f;
-
+        public float NoiseAmplitude = 15f;
+        public float NoiseFrequency = 10f;
+        
         public object Clone()
         {
-            return new ProjectileSinusoidalTrajectoryBehaviour
+            return new ProjectileNoiseTrajectoryProcessor
             {
-                Amplitude = Amplitude,
-                Frequency = Frequency
+                NoiseAmplitude = NoiseAmplitude,
+                NoiseFrequency = NoiseFrequency
             };
         }
-
+        
         public void Initialize(ProjectileEmitter emitter)
         {
         }
@@ -30,13 +30,13 @@ namespace Game.Features.Projectiles.Behaviours
             {
                 ref Projectile projectile = ref projectiles[i];
                 Vector2 velocity = projectile.Velocity;
-                float angle = Mathf.Sin(time * Frequency) * Amplitude * Mathf.Deg2Rad;
+                float angle = (Mathf.PerlinNoise(time * NoiseFrequency, projectile.Seed) * 2f - 1f) * NoiseAmplitude * Mathf.Deg2Rad;
                 float cos = Mathf.Cos(angle);
                 float sin = Mathf.Sin(angle);
                 projectile.Velocity = new Vector2(velocity.X * cos - velocity.Y * sin, velocity.X * sin + velocity.Y * cos);
             }
         }
-        
+
         public void OnNewProjectilesLaunched(int startIndex, int endIndex, Span<Projectile> projectiles)
         {
         }
@@ -44,7 +44,7 @@ namespace Game.Features.Projectiles.Behaviours
         public void OnProjectileDestroyed(int projectileIndex, Span<Projectile> projectiles)
         {
         }
-        
+
         public void OnProjectileIndexChanged(int lastIndex, int newIndex, Span<Projectile> projectiles)
         {
         }

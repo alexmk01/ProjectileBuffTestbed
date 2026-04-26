@@ -19,8 +19,7 @@ namespace Game.Features.Construction
         {
             builder.Register<BuildingSpawner>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<BuildingConstructionService>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.RegisterEntryPoint<BuildingConstructionPresenter>();
-            builder.RegisterEntryPoint<BuildingDestructionHandler>();
+            builder.RegisterEntryPoint<BuildingCommandsHandler>();
             builder.RegisterMessageBroker<StartBuildingConstructionModeCommand>(messagePipeOptions);
             builder.RegisterMessageBroker<ConstructBuildingCommand>(messagePipeOptions);
             builder.RegisterMessageBroker<CompleteBuildingConstructionModeCommand>(messagePipeOptions);

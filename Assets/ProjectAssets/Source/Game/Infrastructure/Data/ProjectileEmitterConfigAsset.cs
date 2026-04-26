@@ -1,7 +1,7 @@
-using System;
 using Common;
 using Game.Core.Projectiles;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game.Infrastructure.Data
 {
@@ -11,8 +11,8 @@ namespace Game.Infrastructure.Data
         public ProjectileEmitter.Parameters EmitterParameters = ProjectileEmitter.Parameters.Default;
         [SerializeReference, SubclassSelector]
         public IProjectilesRenderer ProjectilesRenderer;
-        [SerializeReference, SubclassSelector]
-        public IProjectilesBehaviour[] ProjectilesModifiers;
+        [SerializeReference, FormerlySerializedAs("ProjectilesModifiers"), SubclassSelector]
+        public IProjectileProcessor[] ProjectileProcessors;
         
         public ProjectileEmitterConfig CreateConfig()
         {
@@ -20,7 +20,7 @@ namespace Game.Infrastructure.Data
             {
                 EmitterParameters = EmitterParameters,
                 ProjectilesRenderer = (IProjectilesRenderer)ProjectilesRenderer?.Clone(),
-                ProjectilesBehaviours = ProjectilesModifiers?.CloneArray()
+                ProjectileProcessors = ProjectileProcessors?.CloneArray()
             };
         }
     }

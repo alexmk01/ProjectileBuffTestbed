@@ -11,7 +11,7 @@ namespace Common.Unity.Tags.Hierarchical.Editor
         private const string TagIdRaw1PropertyName = "u64_1";
 
         protected virtual string TagIdPropertyName => "tagId";
-
+        
         private static void GetTagIdProperties(SerializedProperty tagProperty, out SerializedProperty idRawValue0, out SerializedProperty idRawValue1)
         {
             idRawValue0 = tagProperty.FindPropertyRelative(TagIdRaw0PropertyName);
@@ -34,7 +34,6 @@ namespace Common.Unity.Tags.Hierarchical.Editor
         }
 
         private readonly Dictionary<Guid, string> newTags = new(16);
-        //private HierarchicalTagSelectionPopup tagSelectionPopup;
         private HierarchicalTagsEditorWindow tagSelectionPopup;
         private SerializedProperty currentTagProperty;
         private Guid currentTagId;
@@ -120,11 +119,5 @@ namespace Common.Unity.Tags.Hierarchical.Editor
         {
             newTags.Clear();
         }
-
-        //private void OnTagSelected(HierarchicalTagSelectionPopup selectionPopup)
-        //{
-        //    HierarchicalTagSelectionPopup.TagItem selectedItem = selectionPopup.SelectedItem;
-        //    SetCurrentTagId(selectionPopup.TagProperty, selectedItem?.tagId ?? Guid.Empty);
-        //}
     }
 }

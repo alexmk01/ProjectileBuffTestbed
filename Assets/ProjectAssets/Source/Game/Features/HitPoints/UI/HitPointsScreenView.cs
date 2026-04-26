@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Common;
+using Game.Infrastructure;
 using Game.Infrastructure.UI;
-using TMPro;
 using UnityEngine;
 
 namespace Game.Features.HitPoints.UI
@@ -51,7 +51,7 @@ namespace Game.Features.HitPoints.UI
         
         public void ShowHitPointsChangeMessage(Vector2 localPosition, float amount)
         {
-            hitPointsChangeMessageViewPrefab.InstantiateMessageView(localPosition, $"{amount:+#;-#;0}", Transform, hitPointsChangeMessageLifetime);
+            hitPointsChangeMessageViewPrefab.InstantiateMessageView(localPosition, amount.FormatAmount(), Transform, hitPointsChangeMessageLifetime);
         }
     }
 }

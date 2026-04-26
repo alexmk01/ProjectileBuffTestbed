@@ -8,10 +8,10 @@ using UnityEngine;
 using UnityEngine.Pool;
 using VContainer;
 
-namespace Game.Features.Projectiles.Behaviours
+namespace Game.Features.Projectiles.Processors
 {
     [Serializable]
-    public sealed class ProjectilesHitBehaviour : IProjectilesBehaviour
+    public sealed class ProjectileHitProcessor : IProjectileProcessor
     {
         public LayerMask DamageableLayers = -1;
         
@@ -26,7 +26,7 @@ namespace Game.Features.Projectiles.Behaviours
         
         public object Clone()
         {
-            return new ProjectilesHitBehaviour
+            return new ProjectileHitProcessor
             {
                 DamageableLayers = DamageableLayers
             };
@@ -35,6 +35,7 @@ namespace Game.Features.Projectiles.Behaviours
         public void Initialize(ProjectileEmitter emitter)
         {
             lastHitEntityIds = new int[64];
+            emitter.AddProjectileProcessor(new ProjectileAdditionalDataSyncProcessor<int>(lastHitEntityIds, 0));
         }
         
         public void ModifyProjectiles(Span<Projectile> projectiles, float time, float deltaTime)
@@ -67,20 +68,10 @@ namespace Game.Features.Projectiles.Behaviours
         
         public void OnNewProjectilesLaunched(int startIndex, int endIndex, Span<Projectile> projectiles)
         {
-            if (projectiles.Length > lastHitEntityIds.Length)
-            {
-                Array.Resize(ref lastHitEntityIds, (int)(projectiles.Length * 1.5f));
-            }
-            
-            for (int i = startIndex; i <= endIndex; i++)
-            {
-                lastHitEntityIds[i] = 0;
-            }
         }
 
         public void OnProjectileIndexChanged(int lastIndex, int newIndex, Span<Projectile> projectiles)
         {
-            lastHitEntityIds[newIndex] = lastHitEntityIds[lastIndex];
         }
 
         public void OnProjectileDestroyed(int projectileIndex, Span<Projectile> projectiles)

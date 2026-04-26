@@ -27,17 +27,17 @@ namespace Game.Core.Projectiles
         private static int lastEmitterId = 0;
         
         private static int GetEmitterId() => ++lastEmitterId;
-
+        
         public int Id { get; } = GetEmitterId();
         public Span<Projectile> Projectiles => projectiles.AsSpan();
         public IProjectilesRenderer ProjectilesRenderer => renderer;
-        public IReadOnlyList<IProjectilesBehaviour> ProjectilesBehaviours => behaviours;
+        public IReadOnlyList<IProjectileProcessor> ProjectileProcessors => processors;
 
         public Parameters EmitterParameters = Parameters.Default;
-
+        
         private List<Projectile> projectiles = new(64);
         private List<Projectile> newProjectiles = new(8);
-        private IProjectilesBehaviour[] behaviours;
+        private List<IProjectileProcessor> processors = new(4);
         private IProjectilesRenderer renderer;
 
         public ProjectileEmitter(ProjectileEmitterConfig config)
@@ -45,12 +45,20 @@ namespace Game.Core.Projectiles
             EmitterParameters = config.EmitterParameters;
             renderer = config.ProjectilesRenderer;
             renderer?.Initialize(this);
-            behaviours = config.ProjectilesBehaviours ?? Array.Empty<IProjectilesBehaviour>();
+            processors.AddRange(config.ProjectileProcessors);
 
-            for (int i = 0; i < behaviours.Length; i++)
+            for (int i = 0; i < processors.Count; i++)
             {
-                behaviours[i].Initialize(this);
+                processors[i].Initialize(this);
             }
+        }
+        
+        public void AddProjectileProcessor(IProjectileProcessor processor)
+        {
+            DebugUtils.Assert(processor != null);
+            DebugUtils.Assert(!processors.Contains(processor));
+            processors.Add(processor);
+            processor.Initialize(this);
         }
         
         public void EmitProjectile(in ProjectileEmissionArgs args)
@@ -83,18 +91,18 @@ namespace Game.Core.Projectiles
                 this.projectiles.AddRange(newProjectiles);
                 newProjectiles.Clear();
 
-                for (i = 0; i < behaviours.Length; i++)
+                for (i = 0; i < processors.Count; i++)
                 {
-                    behaviours[i].OnNewProjectilesLaunched(startIndex, endIndex, this.projectiles.AsSpan());
+                    processors[i].OnNewProjectilesLaunched(startIndex, endIndex, this.projectiles.AsSpan());
                 }
             }
             
             if (this.projectiles.Count == 0) return;
             Span<Projectile> projectiles = this.projectiles.AsSpan();
 
-            for (i = 0; i < behaviours.Length; i++)
+            for (i = 0; i < processors.Count; i++)
             {
-                behaviours[i].ModifyProjectiles(projectiles, time, deltaTime);
+                processors[i].ModifyProjectiles(projectiles, time, deltaTime);
             }
 
             for (i = 0; i < projectiles.Length; i++)
@@ -113,12 +121,12 @@ namespace Game.Core.Projectiles
 
                 if (projectile.RemainingLifetime <= 0f || projectile.RemainingHitCount <= 0)
                 {
-                    for (int j = 0; j < behaviours.Length; j++)
+                    for (int j = 0; j < processors.Count; j++)
                     {
-                        IProjectilesBehaviour behaviour = behaviours[j];
-                        behaviour.OnProjectileDestroyed(i, projectiles);
+                        IProjectileProcessor processor = processors[j];
+                        processor.OnProjectileDestroyed(i, projectiles);
                         //Sync additional data etc
-                        behaviour.OnProjectileIndexChanged(projectiles.Length - 1, i, projectiles);
+                        processor.OnProjectileIndexChanged(projectiles.Length - 1, i, projectiles);
                     }
 
                     this.projectiles.RemoveSwapBack(i);
@@ -146,12 +154,12 @@ namespace Game.Core.Projectiles
             (renderer as IDisposable)?.Dispose();
             renderer = null;
 
-            foreach (IProjectilesBehaviour modifier in behaviours)
+            foreach (IProjectileProcessor processor in processors)
             {
-                (modifier as IDisposable)?.Dispose();
+                (processor as IDisposable)?.Dispose();
             }
 
-            behaviours = null;
+            processors = null;
         }
     }
 }
