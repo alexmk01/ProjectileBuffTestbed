@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: PlayerBuildings_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 26c0f95e6f6130447b2b9dc4b1915e7f, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 201539444736
+    m_Localized: Shoots a plasma projectile every 3 seconds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 249723609088
+    m_Localized: Increases the damage of the flying projectile by 50% of its original
+      value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 328182259712
+    m_Localized: +1 pierce for the flying projectile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 421551661056
+    m_Localized: Creates a copy of the projectile at the beginning of the gun's zone.
+      The copy cannot be duplicated. It has 50% of the parent projectile's damage
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

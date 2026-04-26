@@ -1,0 +1,24 @@
+{
+    "name": "Game.Features.HitPoints.UI",
+    "rootNamespace": "Game.Features.HitPoints.UI",
+    "references": [
+        "GUID:ff2066487c9339943accacf8013b5d09",
+        "GUID:0609b083b3b984f4fb5172f1a3728d2c",
+        "GUID:0b3b910d7426e414f9787ee16386b309",
+        "GUID:8d324be9e744a2447bdd0c125187cdd9",
+        "GUID:d2318dcb529cd4e4cac36c624805312b",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:08b38f39e2d9e594389b7a4cf4c2c338",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

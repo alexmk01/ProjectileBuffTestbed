@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55839dcb3e2e2b24c9154ea49dc3b3d4, type: 3}
+  m_Name: Projectile01
+  m_EditorClassIdentifier: Game.Base::Game.Infrastructure.Data.ProjectileEmitterConfigAsset
+  EmitterParameters:
+    ProjectileSpeed: 10
+    ProjectileLifetime: 10
+    ProjectileDamage: 10
+    MaxProjectileHitCount: 1
+  ProjectilesRenderer:
+    rid: 7058138136372576515
+  ProjectilesModifiers:
+  - rid: 7058138462007328853
+  - rid: 7058138462007328854
+  - rid: 7058138136372576516
+  - rid: 7058138136372576517
+  references:
+    version: 2
+    RefIds:
+    - rid: 7058138136372576515
+      type: {class: ParticleSystemProjectilesRenderer, ns: Game.Features.Projectiles.Renderers, asm: Game.Features.Projectiles}
+      data:
+        ParticleSystemPrefab: {fileID: 2926387547952847402, guid: 26cd443f495b65546a9a2abf5f1fcc82, type: 3}
+    - rid: 7058138136372576516
+      type: {class: ProjectilesCellChangeEventBehaviour, ns: Game.Features.Projectiles.Behaviours, asm: Game.Features.Projectiles}
+      data: 
+    - rid: 7058138136372576517
+      type: {class: ProjectilesHitBehaviour, ns: Game.Features.Projectiles.Behaviours, asm: Game.Features.Projectiles}
+      data:
+        DamageableLayers:
+          serializedVersion: 2
+          m_Bits: 128
+    - rid: 7058138462007328853
+      type: {class: ProjectileSinusoidalTrajectoryBehaviour, ns: Game.Features.Projectiles.Behaviours, asm: Game.Features.Projectiles}
+      data:
+        Amplitude: 15
+        Frequency: 10
+    - rid: 7058138462007328854
+      type: {class: ProjectileNoiseTrajectoryBehaviour, ns: Game.Features.Projectiles.Behaviours, asm: Game.Features.Projectiles}
+      data:
+        NoiseAmplitude: 15
+        NoiseFrequency: 10

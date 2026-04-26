@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Default Local Group
+  m_GUID: 0169b7d39541c5e458f3403e0ec1b330
+  m_SerializeEntries:
+  - m_GUID: 2375fe0ef8eec7d4987647415135becd
+    m_Address: Assets/ProjectAssets/Content/Prefabs/Maps
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - maps
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3ab4da52d2ef5f4ea5a43ea9f8722a2
+    m_Address: Assets/ProjectAssets/Content/Prefabs/Buildings
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - buildings
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 0d7b039a7b82ca2468b1d5eece87e183, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1b8748d02338a3c4da5ec7fe8abffd8b, type: 2}
+    - {fileID: 11400000, guid: 62fd94be6d7ddfc468dd94d558f270d6, type: 2}

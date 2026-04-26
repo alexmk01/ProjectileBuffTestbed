@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 857f34ab0674ccd47a068c188df9f22e, type: 3}
+  m_Name: BuildingsBehaviourVFXData
+  m_EditorClassIdentifier: Game.Infrastructure.VFX::Game.Infrastructure.VFX.EffectsDataAsset
+  EffectsData:
+  - Id:
+      u64_0: 5276696281701900248
+      u64_1: -7542807969042660989
+    EffectPrefab: {fileID: 7674576146381848901, guid: af5e08c0d984efc46aaea56847417a6c, type: 3}
+  - Id:
+      u64_0: 4614798755494453009
+      u64_1: 2580018193898624179
+    EffectPrefab: {fileID: 7674576146381848901, guid: af5e08c0d984efc46aaea56847417a6c, type: 3}
+  - Id:
+      u64_0: 5167473131951424731
+      u64_1: -2379841203004015482
+    EffectPrefab: {fileID: 7674576146381848901, guid: af5e08c0d984efc46aaea56847417a6c, type: 3}

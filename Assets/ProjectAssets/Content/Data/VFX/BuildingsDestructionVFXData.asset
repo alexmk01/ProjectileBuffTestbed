@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 857f34ab0674ccd47a068c188df9f22e, type: 3}
+  m_Name: BuildingsDestructionVFXData
+  m_EditorClassIdentifier: Game.Infrastructure.VFX::Game.Infrastructure.VFX.EffectsDataAsset
+  EffectsData:
+  - Id:
+      u64_0: 5430011618372001564
+      u64_1: 2985671698987091385
+    EffectPrefab: {fileID: 7888276211927684898, guid: c13e6d03f90c103459f9086043802624, type: 3}
+  - Id:
+      u64_0: 5182340955294393298
+      u64_1: -7534478870766586208
+    EffectPrefab: {fileID: 7888276211927684898, guid: c13e6d03f90c103459f9086043802624, type: 3}
+  - Id:
+      u64_0: 5430011618372001564
+      u64_1: 2985671698987091385
+    EffectPrefab: {fileID: 7888276211927684898, guid: c13e6d03f90c103459f9086043802624, type: 3}

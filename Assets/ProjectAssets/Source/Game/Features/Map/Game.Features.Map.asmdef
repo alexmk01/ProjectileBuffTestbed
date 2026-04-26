@@ -1,0 +1,22 @@
+{
+    "name": "Game.Features.Map",
+    "rootNamespace": "Game.Features.Map",
+    "references": [
+        "GUID:ff2066487c9339943accacf8013b5d09",
+        "GUID:0609b083b3b984f4fb5172f1a3728d2c",
+        "GUID:0b3b910d7426e414f9787ee16386b309",
+        "GUID:8d324be9e744a2447bdd0c125187cdd9",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:08b38f39e2d9e594389b7a4cf4c2c338",
+        "GUID:4f682e06dbb3e624faedad9cc27106cc"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

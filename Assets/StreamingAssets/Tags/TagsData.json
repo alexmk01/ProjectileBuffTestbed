@@ -1,0 +1,44 @@
+{
+  "tags": [
+    {
+      "tagId": "6e632e59-b688-4cef-a675-fd30d3cee051",
+      "tagString": "Id"
+    },
+    {
+      "tagId": "3e326c9a-bdfb-4488-a1b1-180bba793e11",
+      "tagString": "Id.PlayerBuilding"
+    },
+    {
+      "tagId": "f76478ff-f411-467e-ae84-7acf9626bb02",
+      "tagString": "Id.PlayerBuilding.Turret"
+    },
+    {
+      "tagId": "a2775fd8-974f-493a-8301-3a9c1d905297",
+      "tagString": "Id.PlayerBuilding.DamageBooster"
+    },
+    {
+      "tagId": "93295f11-0f04-400b-b354-5fb9e010ce23",
+      "tagString": "Id.PlayerBuilding.PiercingBooster"
+    },
+    {
+      "tagId": "605704db-8d6f-47b6-867c-1be9081bf9de",
+      "tagString": "Id.PlayerBuilding.ProjectileCloner"
+    },
+    {
+      "tagId": "b902011b-acb2-40a4-8f56-d5acce089b82",
+      "tagString": "Id.EnemyBuilding"
+    },
+    {
+      "tagId": "274e9f1c-46cc-4b5b-b905-106a973c6f29",
+      "tagString": "Id.EnemyBuilding.LightBuilding"
+    },
+    {
+      "tagId": "4147e3d2-5fa4-47eb-a076-45ec62277097",
+      "tagString": "Id.EnemyBuilding.MediumBuilding"
+    },
+    {
+      "tagId": "1248df13-15c4-43a2-80de-537ce4386d89",
+      "tagString": "Id.EnemyBuilding.HeavyBuilding"
+    }
+  ]
+}
