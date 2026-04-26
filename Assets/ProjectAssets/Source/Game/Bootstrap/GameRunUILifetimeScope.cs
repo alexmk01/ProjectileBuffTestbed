@@ -18,15 +18,19 @@ namespace Game.Bootstrap
         public GameObject EntityDragHighlightViewPrefab;
         public GameObject EntityDragIndicatorViewPrefab;
         public GameObject BuildingBehaviourScreenViewPrefab;
+        public Canvas HitPointsScreenViewCanvas;
+        public Canvas BuildingBehaviourScreenViewCanvas;
         
         protected override void Configure(IContainerBuilder builder)
         {
-            var canvas = GetComponentInChildren<Canvas>();
-            new BuildingConstructionUIFeatureInstaller(ConstructionModeViewPrefab, ConstructionPanelViewPrefab, canvas.transform).Install(builder);
-            new ProjectilesUIFeatureInstaller(ProjectilesViewPanelPrefab, canvas.transform).Install(builder);
-            new HitPointsUIFeatureInstaller(HitPointsScreenViewPrefab, canvas.transform).Install(builder);
+            var mainCanvas = GetComponentInChildren<Canvas>();
+            Canvas TakeCanvasOrDefault(Canvas canvas) => canvas != null ? canvas : mainCanvas;
+            
+            new BuildingConstructionUIFeatureInstaller(ConstructionModeViewPrefab, ConstructionPanelViewPrefab, mainCanvas.transform).Install(builder);
+            new ProjectilesUIFeatureInstaller(ProjectilesViewPanelPrefab, mainCanvas.transform).Install(builder);
+            new HitPointsUIFeatureInstaller(HitPointsScreenViewPrefab, TakeCanvasOrDefault(HitPointsScreenViewCanvas).transform).Install(builder);
             new EntityDragUIFeatureInstaller(EntityDragHighlightViewPrefab, EntityDragIndicatorViewPrefab).Install(builder);
-            new BuildingBehaviourUIFeatureInstaller(BuildingBehaviourScreenViewPrefab, canvas.transform).Install(builder);
+            new BuildingBehaviourUIFeatureInstaller(BuildingBehaviourScreenViewPrefab, TakeCanvasOrDefault(BuildingBehaviourScreenViewCanvas).transform).Install(builder);
         }
     }
 }
