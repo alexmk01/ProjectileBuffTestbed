@@ -192,15 +192,6 @@ namespace Game.Features.Player.Controller
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""EndDrag"",
-                    ""type"": ""Button"",
-                    ""id"": ""eaee45b3-aa17-49f8-b877-7177fd14aab8"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -604,21 +595,10 @@ namespace Game.Features.Player.Controller
                     ""name"": """",
                     ""id"": ""dc1f0a2a-23b9-476a-8237-0e1026554bb8"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Hold(duration=0.1)"",
+                    ""interactions"": ""Hold(duration=0.06)"",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""StartDrag"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1277f591-91cc-4d37-8b15-8180e085b0a6"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Press(behavior=1)"",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""EndDrag"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1217,7 +1197,6 @@ namespace Game.Features.Player.Controller
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
             m_Player_CancelBuildingConstruction = m_Player.FindAction("CancelBuildingConstruction", throwIfNotFound: true);
             m_Player_StartDrag = m_Player.FindAction("StartDrag", throwIfNotFound: true);
-            m_Player_EndDrag = m_Player.FindAction("EndDrag", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1322,7 +1301,6 @@ namespace Game.Features.Player.Controller
         private readonly InputAction m_Player_Sprint;
         private readonly InputAction m_Player_CancelBuildingConstruction;
         private readonly InputAction m_Player_StartDrag;
-        private readonly InputAction m_Player_EndDrag;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1378,10 +1356,6 @@ namespace Game.Features.Player.Controller
             /// Provides access to the underlying input action "Player/StartDrag".
             /// </summary>
             public InputAction @StartDrag => m_Wrapper.m_Player_StartDrag;
-            /// <summary>
-            /// Provides access to the underlying input action "Player/EndDrag".
-            /// </summary>
-            public InputAction @EndDrag => m_Wrapper.m_Player_EndDrag;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1441,9 +1415,6 @@ namespace Game.Features.Player.Controller
                 @StartDrag.started += instance.OnStartDrag;
                 @StartDrag.performed += instance.OnStartDrag;
                 @StartDrag.canceled += instance.OnStartDrag;
-                @EndDrag.started += instance.OnEndDrag;
-                @EndDrag.performed += instance.OnEndDrag;
-                @EndDrag.canceled += instance.OnEndDrag;
             }
 
             /// <summary>
@@ -1488,9 +1459,6 @@ namespace Game.Features.Player.Controller
                 @StartDrag.started -= instance.OnStartDrag;
                 @StartDrag.performed -= instance.OnStartDrag;
                 @StartDrag.canceled -= instance.OnStartDrag;
-                @EndDrag.started -= instance.OnEndDrag;
-                @EndDrag.performed -= instance.OnEndDrag;
-                @EndDrag.canceled -= instance.OnEndDrag;
             }
 
             /// <summary>
@@ -1868,13 +1836,6 @@ namespace Game.Features.Player.Controller
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnStartDrag(InputAction.CallbackContext context);
-            /// <summary>
-            /// Method invoked when associated input action "EndDrag" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnEndDrag(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

@@ -104,15 +104,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "EndDrag",
-                    "type": "Button",
-                    "id": "eaee45b3-aa17-49f8-b877-7177fd14aab8",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -516,21 +507,10 @@
                     "name": "",
                     "id": "dc1f0a2a-23b9-476a-8237-0e1026554bb8",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "Hold(duration=0.1)",
+                    "interactions": "Hold(duration=0.06)",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "StartDrag",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1277f591-91cc-4d37-8b15-8180e085b0a6",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "EndDrag",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
