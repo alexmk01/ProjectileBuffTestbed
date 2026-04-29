@@ -1,9 +1,9 @@
 using System;
 using System.Numerics;
+using Game.Core.BuildingBehaviour;
 using Game.Core.BuildingBehaviour.Messages;
 using Game.Core.Buildings;
 using Game.Core.Map;
-using Game.Core.Map.Services;
 using Game.Core.Projectiles;
 using Game.Core.Projectiles.Events;
 using Game.Infrastructure;
@@ -25,7 +25,7 @@ namespace Game.Features.BuildingBehaviour.Behaviours
         [Inject]
         private void Construct
         (
-            IGameMapService mapService,
+            IGameMap gameMap,
             ISubscriber<ProjectileCellChangedMessage> cellChangedMessageSubscriber,
             IPublisher<BuildingBehaviourEffectAppliedMessage> effectAppliedMessagePublisher
         )
@@ -35,18 +35,18 @@ namespace Game.Features.BuildingBehaviour.Behaviours
             cellChangedMessageSubscriber
                 .Subscribe(message =>
                 {
-                    if (IsActive && message.CellIndex == mapService.GetCellIndex(Building.Position))
+                    if (IsActive && message.CellIndex == gameMap.GetCellIndex(Building.Position))
                     {
                         ref readonly Projectile projectile = ref message.Emitter.Projectiles[message.ProjectileIndex];
 
                         if (projectile.Generation <= 1)
                         {
-                            if (mapService.TryGetEntityPlacementArea(Building, out GameMapArea currentArea))
+                            if (gameMap.TryGetEntityPlacementArea(Building, out GameMapArea currentArea))
                             {
                                 var args = new ProjectileEmissionArgs
                                 {
                                     Position = currentArea.Min + new Vector2(0f, currentArea.Size.Y * 0.5f),
-                                    Direction = Vector2.Normalize(projectile.StartVelocity),
+                                    Direction = Vector2.Normalize(projectile.LaunchVelocity),
                                     DamageOverride = projectile.Damage * BehaviourData.ClonedProjectileDamageMultiplier,
                                     ProjectileGeneration = Math.Max(projectile.Generation, 1) + 1
                                 };

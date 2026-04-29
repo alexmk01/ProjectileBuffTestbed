@@ -6,7 +6,7 @@ namespace Game.Features.BuildingBehaviour
     public abstract class BuildingBehaviourBase<TData> : IBuildingBehaviour 
         where TData : IBuildingBehaviourData
     {
-        object IBuildingBehaviour.BehaviourData => BehaviourData;
+        IBuildingBehaviourData IBuildingBehaviour.BehaviourData => BehaviourData;
         public bool IsActive { get; set; }
         
         protected readonly TData BehaviourData;

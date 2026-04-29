@@ -4,12 +4,11 @@ using System.Numerics;
 using Common;
 using Game.Core.Entities;
 using Game.Core.Map;
-using Game.Core.Map.Services;
 using Game.Infrastructure.Entities;
 
-namespace Game.Features.Map.Services
+namespace Game.Features.Map
 {    
-    public sealed class GameMapService : IDisposable, IGameMapService
+    public sealed class GameMap : IDisposable, IGameMap
     {
         public ref readonly GameMapGridParameters GridParameters => ref gridParameters;
         public ReadOnlySpan<GameMapArea> EntityPlacementAreas => entityPlacementAreas;
@@ -19,7 +18,7 @@ namespace Game.Features.Map.Services
         private readonly IEntityRegistry entityRegistry;
         private readonly GameMapArea[] entityPlacementAreas;
 
-        public GameMapService(IGameMapGrid grid, IEntityRegistry entityRegistry, GameMapArea[] entityPlacementAreas)
+        public GameMap(IGameMapGrid grid, IEntityRegistry entityRegistry, GameMapArea[] entityPlacementAreas)
         {
             this.grid = grid;
             gridParameters = new(grid);
@@ -29,7 +28,7 @@ namespace Game.Features.Map.Services
         
         public int GetCellIndex(Vector2 position) => grid.GetCellIndex(grid.GetCellCoords(position));
         
-        public Vector2 GetEntityPlacementPosition(Vector2 worldPosition) => grid.GetCellPosition(grid.GetCellCoords(worldPosition));
+        public Vector2 GetCellPosition(Vector2 worldPosition) => grid.GetCellPosition(grid.GetCellCoords(worldPosition));
         //TODO: implement IPlacementValidator
         public bool IsEntityPlacementAllowed(Vector2 worldPosition)
         {
@@ -83,15 +82,15 @@ namespace Game.Features.Map.Services
         
         public void MoveEntityToOtherCell(IEntity entity, Vector2 position)
         {
-            //if (grid.GetCellCoords(entity.Position) == grid.GetCellCoords(position)) return;
             grid.RemoveEntity(entity.InstanceId);
-            entity.Position = GetEntityPlacementPosition(position);
+            entity.Position = GetCellPosition(position);
             grid.AddEntity(entity.InstanceId, position);
         }
         
         public void AddEntityToGrid(IEntity entity)
         {
-            //TODO: asserts 
+            DebugUtils.Assert(entity != null);
+            DebugUtils.Assert(entity.InstanceId != 0);
             grid.AddEntity(entity.InstanceId, entity.Position);
         }
         

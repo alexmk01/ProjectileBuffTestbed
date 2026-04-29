@@ -1,5 +1,5 @@
 using System;
-using Game.Core.Map.Services;
+using Game.Core.Map;
 using Game.Core.Projectiles;
 using Game.Core.Projectiles.Events;
 using MessagePipe;
@@ -10,15 +10,15 @@ namespace Game.Features.Projectiles.Processors
     [Serializable]
     public sealed class ProjectileCellChangeEventProcessor : IProjectileProcessor
     {
-        private IGameMapService gameMapService;
+        private IGameMap gameMap;
         private IPublisher<ProjectileCellChangedMessage> cellChangedMessagePublisher;
         private int[] projectileCellIndices;
         private ProjectileEmitter projectileEmitter;
 
         [Inject]
-        private void Construct(IGameMapService gameMapService, IPublisher<ProjectileCellChangedMessage> cellChangedMessagePublisher)
+        private void Construct(IGameMap gameMap, IPublisher<ProjectileCellChangedMessage> cellChangedMessagePublisher)
         {
-            this.gameMapService = gameMapService;
+            this.gameMap = gameMap;
             this.cellChangedMessagePublisher = cellChangedMessagePublisher;
         }
         
@@ -37,7 +37,7 @@ namespace Game.Features.Projectiles.Processors
             {
                 ref Projectile projectile = ref projectiles[i];
                 ref int cellIndex = ref projectileCellIndices[i];
-                int newCellIndex = gameMapService.GetCellIndex(projectile.Position);
+                int newCellIndex = gameMap.GetCellIndex(projectile.Position);
 
                 if (cellIndex != newCellIndex)
                 {

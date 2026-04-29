@@ -1,7 +1,8 @@
 using System;
+using Game.Core.BuildingBehaviour;
 using Game.Core.BuildingBehaviour.Messages;
 using Game.Core.Buildings;
-using Game.Core.Map.Services;
+using Game.Core.Map;
 using Game.Core.Projectiles;
 using Game.Core.Projectiles.Events;
 using MessagePipe;
@@ -18,21 +19,21 @@ namespace Game.Features.BuildingBehaviour.Behaviours
         }
         
         private IDisposable disposables;
-
+        
         [Inject]
         private void Construct
         (
-            IGameMapService mapService,
+            IGameMap gameMap,
             ISubscriber<ProjectileCellChangedMessage> cellChangedMessageSubscriber,
             IPublisher<BuildingBehaviourEffectAppliedMessage> effectAppliedMessagePublisher
         )
         {
             var disposableBuilder = DisposableBag.CreateBuilder();
-
+            
             cellChangedMessageSubscriber
                 .Subscribe(message =>
                 {
-                    if (IsActive && message.CellIndex == mapService.GetCellIndex(Building.Position))
+                    if (IsActive && message.CellIndex == gameMap.GetCellIndex(Building.Position))
                     {
                         ref Projectile projectile = ref message.Emitter.Projectiles[message.ProjectileIndex];
                         float damageAddition = projectile.StartDamage * BehaviourData.BaseDamageMultiplier;

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Common;
 using Game.Core.Entities;
-using Game.Core.Entities.Messages;
+using Game.Core.LifeCycle.Messages;
 using MessagePipe;
 using UnityEngine.Assertions;
 
@@ -25,14 +25,16 @@ namespace Game.Infrastructure.Entities
         public EntityRegistry(ISubscriber<EntityKilledMessage> killedMessageSubscriber)
         {
             var disposablesBuilder = DisposableBag.CreateBuilder();
+            
             killedMessageSubscriber.Subscribe(message =>
             {
-                if (entitiesById.TryGetValue(message.Entity.InstanceId, out IEntity entity))
+                if (message.Entity is IEntity killedEntity)
                 {
-                    RemoveEntityFromList(entity);
+                    RemoveEntity(killedEntity);
                 }
             })
             .AddTo(disposablesBuilder);
+
             disposables = disposablesBuilder.Build();
         }
         

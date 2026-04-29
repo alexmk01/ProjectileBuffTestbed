@@ -13,7 +13,7 @@ namespace Game.Features.HitPoints
             var scope = (LifetimeScope)builder.ApplicationOrigin;
             //Entity scope installer
             Assert.IsTrue(scope.TryGetComponent<IEntity>(out _));
-            builder.Register<HitPointsController>(Lifetime.Scoped).As<IHitPointsController>();
+            builder.Register<HitPointsService>(Lifetime.Scoped).As<IHitPointsService>();
             builder.RegisterComponent(scope.gameObject.AddComponent<HitPointsComponent>());
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using Common.Unity;
+using Game.Core.BuildingBehaviour;
 using Game.Core.Buildings;
 using Game.Core.Projectiles;
 using Game.Core.Projectiles.Services;
@@ -50,7 +51,7 @@ namespace Game.Features.BuildingBehaviour.Behaviours
                 .Subscribe(_ =>
                 {
                     Transform launchPivot = BehaviourData.ProjectileLaunchPivot;
-
+                    
                     var args = new ProjectileEmissionArgs
                     {
                         Position = launchPivot.position.ToNumericsVector2(),

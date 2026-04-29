@@ -1,7 +1,7 @@
 using System;
 using Game.Core.Buildings;
 using Game.Core.Construction.Services;
-using Game.Core.Entities.Messages;
+using Game.Core.LifeCycle.Messages;
 using MessagePipe;
 using VContainer.Unity;
 

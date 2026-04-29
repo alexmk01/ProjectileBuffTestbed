@@ -15,12 +15,12 @@ namespace Game.Core.Projectiles
             }
         }
         
-        public readonly Vector2 StartVelocity;
         public readonly float StartLifetime;
         public readonly float StartDamage;
         public readonly int Generation;
         public readonly int Seed;
         public Vector2 Position;
+        public Vector2 LaunchVelocity;
         public Vector2 Velocity;
         public float Damage;
         public float RemainingLifetime;
@@ -30,13 +30,13 @@ namespace Game.Core.Projectiles
         
         internal void ResetState()
         {
-            Velocity = StartVelocity;
+            Velocity = LaunchVelocity;
             IsHitCountDirty = false;
         }
         
         public Projectile(Vector2 startVelocity, float startLifetime, float startDamage, int generation, int seed) : this()
         {
-            StartVelocity = startVelocity;
+            LaunchVelocity = startVelocity;
             StartLifetime = startLifetime;
             StartDamage = startDamage;
             Generation = generation;

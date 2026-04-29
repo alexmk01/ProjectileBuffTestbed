@@ -1,14 +1,15 @@
 using Common.Unity;
 using Game.Core.Entities;
-using Game.Core.Entities.Messages;
 using Game.Core.HitPoints;
+using Game.Core.LifeCycle;
+using Game.Core.LifeCycle.Messages;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
 
 namespace Game.Infrastructure.Entities
 {
-    public class EntityMainComponent : MonoBehaviour, IEntity
+    public class EntityMainComponent : MonoBehaviour, IEntity, IKillable
     {
         public int InstanceId { get; internal set; }
         
@@ -19,6 +20,7 @@ namespace Game.Infrastructure.Entities
         }
         
         public HitPointsState HitPointsState { get; internal set; }
+        public bool IsKilled => isKilled;
 
         private IPublisher<EntityKilledMessage> killedMessagePublisher;
         private bool isKilled;

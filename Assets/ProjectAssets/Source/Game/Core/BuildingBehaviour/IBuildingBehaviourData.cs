@@ -1,5 +1,5 @@
 
-namespace Game.Features.BuildingBehaviour
+namespace Game.Core.BuildingBehaviour
 {
     public interface IBuildingBehaviourData { }
 }

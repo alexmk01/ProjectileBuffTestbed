@@ -3,6 +3,7 @@ using Game.Core.Entities;
 using Game.Core.HitPoints;
 using Game.Core.HitPoints.Commands;
 using Game.Core.HitPoints.Events;
+using Game.Core.LifeCycle;
 using MessagePipe;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -13,7 +14,7 @@ namespace Game.Features.HitPoints
     public sealed class HitPointsComponent : MonoBehaviour
     {
         private IEntity entity;
-        private IHitPointsController hitPointsController;
+        private IHitPointsService hitPointsService;
         private IPublisher<HitPointsChangedMessage> changeMessagePublisher;
         private IPublisher<HitPointsExhaustedMessage> exhaustedMessagePublisher;
         private IDisposable disposables;
@@ -22,7 +23,7 @@ namespace Game.Features.HitPoints
         private void Construct
         (
             IEntity entity,
-            IHitPointsController hitPointsController,
+            IHitPointsService hitPointsService,
             ISubscriber<ChangeHitPointsCommand> changeCommandSubscriber,
             IPublisher<HitPointsChangedMessage> changeMessagePublisher,
             IPublisher<HitPointsExhaustedMessage> exhaustedMessagePublisher
@@ -30,7 +31,7 @@ namespace Game.Features.HitPoints
         {
             Assert.IsNotNull(entity?.HitPointsState, name);
             this.entity = entity;
-            this.hitPointsController = hitPointsController;
+            this.hitPointsService = hitPointsService;
             this.changeMessagePublisher = changeMessagePublisher;
             this.exhaustedMessagePublisher = exhaustedMessagePublisher;
             var disposablesBuilder = DisposableBag.CreateBuilder();
@@ -52,12 +53,12 @@ namespace Game.Features.HitPoints
 
             if (command.Amount > 0f)
             {
-                if (hitPointsController.ApplyHealing(hpState, command.Amount))
+                if (hitPointsService.ApplyHealing(hpState, command.Amount))
                 {
                     PublishHitPointsChanged(lastHP);
                 }
             }
-            else if (hitPointsController.ApplyDamage(hpState, -command.Amount))
+            else if (hitPointsService.ApplyDamage(hpState, -command.Amount))
             {
                 PublishHitPointsChanged(lastHP);
             }
@@ -65,7 +66,7 @@ namespace Game.Features.HitPoints
             if (hpState.Current <= 0f)
             {
                 exhaustedMessagePublisher.Publish(new HitPointsExhaustedMessage(entity));
-                entity.Kill();
+                (entity as IKillable )?.Kill();
             }
         }
 

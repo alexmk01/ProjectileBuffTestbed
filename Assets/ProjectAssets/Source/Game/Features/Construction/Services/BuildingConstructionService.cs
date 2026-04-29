@@ -2,34 +2,36 @@ using System.Numerics;
 using Game.Core.Buildings;
 using Game.Core.Construction;
 using Game.Core.Construction.Services;
-using Game.Core.Map.Services;
-using Game.Infrastructure.Entities;
+using Game.Core.Map;
 
 namespace Game.Features.Construction.Services
 {
     public class BuildingConstructionService : IBuildingConstructionService
     {
-        private readonly IEntityRegistry entityRegistry;
-        private readonly IGameMapService mapService;
+        private readonly IGameMap gameMap;
         private readonly IBuildingSpawner spawner;
-        
-        public BuildingConstructionService(IEntityRegistry entityRegistry, IGameMapService mapService, IBuildingSpawner spawner)
+
+        public BuildingConstructionService(IGameMap gameMap, IBuildingSpawner spawner)
         {
-            this.entityRegistry = entityRegistry;
-            this.mapService = mapService;
+            this.gameMap = gameMap;
             this.spawner = spawner;
+        }
+        
+        public bool IsBuildingConstructionAllowed(Vector2 position)
+        {
+            return gameMap.IsEntityPlacementAllowed(position);
         }
 
         public bool TryConstructBuilding(in BuildingId buildingId, Vector2 position)
         {
-            if (mapService.IsEntityPlacementAllowed(position))
+            if (IsBuildingConstructionAllowed(position))
             {
-                position = mapService.GetEntityPlacementPosition(position);
+                position = gameMap.GetCellPosition(position);
                 IBuilding building = spawner.SpawnBuilding(buildingId, position);
 
                 if (building != null)
                 {
-                    mapService.AddEntityToGrid(building);
+                    gameMap.AddEntityToGrid(building);
                     return true;
                 }
             }
@@ -39,8 +41,7 @@ namespace Game.Features.Construction.Services
         
         public void DestroyBuilding(IBuilding building)
         {
-            mapService.RemoveEntityFromGrid(building);
-            entityRegistry.RemoveEntity(building);
+            gameMap.RemoveEntityFromGrid(building);
             building.Kill();
         }
     }

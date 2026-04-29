@@ -4,7 +4,7 @@ using Common;
 using Common.Unity;
 using Game.Core.Buildings;
 using Game.Core.Construction.Commands;
-using Game.Core.Map.Services;
+using Game.Core.Map;
 using Game.Core.Player.Controller.Messages;
 using MessagePipe;
 using R3;
@@ -20,7 +20,7 @@ namespace Game.Features.Construction.UI
         public BuildingConstructionModePresenter
         (
             IBuildingRepository buildingRepository,
-            IGameMapService mapService,
+            IGameMap gameMap,
             ISubscriber<PlayerPointerMoveMessage> pointerMoveSubscriber,
             ISubscriber<StartBuildingConstructionModeCommand> constructionStartSubscriber,
             ISubscriber<CompleteBuildingConstructionModeCommand> constructionCompleteSubscriber,
@@ -28,14 +28,14 @@ namespace Game.Features.Construction.UI
         )
         {
             this.buildingRepository = buildingRepository;
-            this.mapService = mapService;
+            this.gameMap = gameMap;
             this.pointerMoveSubscriber = pointerMoveSubscriber;
             this.constructionStartSubscriber = constructionStartSubscriber;
             this.constructionCompleteSubscriber = constructionCompleteSubscriber;
             this.constructionModeView = constructionModeView;
         }
 
-        private readonly IGameMapService mapService;
+        private readonly IGameMap gameMap;
         private readonly ISubscriber<PlayerPointerMoveMessage> pointerMoveSubscriber;
         private readonly ISubscriber<StartBuildingConstructionModeCommand> constructionStartSubscriber;
         private readonly ISubscriber<CompleteBuildingConstructionModeCommand> constructionCompleteSubscriber;
@@ -66,7 +66,7 @@ namespace Game.Features.Construction.UI
             constructionStartSubscriber
                 .Subscribe(command =>
                 {
-                    constructionModeView.HighlightGrid(mapService.GridParameters, mapService.EntityPlacementAreas);
+                    constructionModeView.HighlightGrid(gameMap.GridParameters, gameMap.EntityPlacementAreas);
                     currentBuildingPreviewPrefab = GetBuildingPreviewPrefab(command.BuildingId);
                 })
                 .AddTo(ref disposableBuilder);
@@ -81,12 +81,12 @@ namespace Game.Features.Construction.UI
                 .AddTo(ref disposableBuilder);
 
             pointerMoveSubscriber
-                .Subscribe(message => buildingPreviewPosition = mapService.GetEntityPlacementPosition(message.WorldPosition))
+                .Subscribe(message => buildingPreviewPosition = gameMap.GetCellPosition(message.WorldPosition))
                 .AddTo(ref disposableBuilder);
 
             Observable.EveryUpdate()
                 .Where(_ => currentBuildingPreviewPrefab != null)
-                .Subscribe(_ => constructionModeView.PreviewBuilding(currentBuildingPreviewPrefab, buildingPreviewPosition.ToUnity(), mapService.IsEntityPlacementAllowed(buildingPreviewPosition)))
+                .Subscribe(_ => constructionModeView.PreviewBuilding(currentBuildingPreviewPrefab, buildingPreviewPosition.ToUnity(), gameMap.IsEntityPlacementAllowed(buildingPreviewPosition)))
                 .AddTo(ref disposableBuilder);
                 
             disposables = disposableBuilder.Build();

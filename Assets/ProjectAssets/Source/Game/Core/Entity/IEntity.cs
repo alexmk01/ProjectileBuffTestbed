@@ -8,7 +8,5 @@ namespace Game.Core.Entities
         int InstanceId { get; }
         Vector2 Position { get; set; }
         HitPointsState HitPointsState { get; }
-
-        void Kill();
     }
 }

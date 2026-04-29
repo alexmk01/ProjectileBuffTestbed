@@ -2,7 +2,7 @@ using System;
 
 namespace Game.Core.HitPoints
 {
-    public class HitPointsController : IHitPointsController
+    public class HitPointsService : IHitPointsService
     {
         public bool ApplyHealing(HitPointsState hitPoints, float amount)
         {

@@ -38,7 +38,7 @@ namespace Game.Bootstrap
             new BuildingsFeatureInstaller(BuildingsDataLocations, buildingScopeInstallers).Install(builder);
             new HitPointsFeatureInstaller(messagePipeOptions).Install(builder);
             new ProjectilesFeatureInstaller(messagePipeOptions).Install(builder);
-            new GameMapFeatureInstaller(new PrefabBasedGameMapLoader(GameMapPrefab), messagePipeOptions).Install(builder);
+            new GameMapFeatureInstaller(new PrefabBasedGameMapLoader(GameMapPrefab)).Install(builder);
             new ConstructionFeatureInstaller(messagePipeOptions).Install(builder);
             new BuildingBehaviourFeatureInstaller(messagePipeOptions).Install(builder);
             new PlayerFeatureInstaller().Install(builder);

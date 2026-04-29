@@ -1,7 +1,8 @@
 using System;
+using Game.Core.BuildingBehaviour;
 using Game.Core.BuildingBehaviour.Messages;
 using Game.Core.Buildings;
-using Game.Core.Map.Services;
+using Game.Core.Map;
 using Game.Core.Projectiles.Events;
 using MessagePipe;
 using VContainer;
@@ -21,7 +22,7 @@ namespace Game.Features.BuildingBehaviour.Behaviours
         [Inject]
         private void Construct
         (
-            IGameMapService mapService,
+            IGameMap gameMap,
             ISubscriber<ProjectileCellChangedMessage> cellChangedMessageSubscriber,
             IPublisher<BuildingBehaviourEffectAppliedMessage> effectAppliedMessagePublisher
         )
@@ -31,7 +32,7 @@ namespace Game.Features.BuildingBehaviour.Behaviours
             cellChangedMessageSubscriber
                 .Subscribe(message =>
                 {
-                    if (IsActive && message.CellIndex == mapService.GetCellIndex(Building.Position))
+                    if (IsActive && message.CellIndex == gameMap.GetCellIndex(Building.Position))
                     {
                         int hitCountModifier = BehaviourData.HitCountModifier;
                         message.Emitter.Projectiles[message.ProjectileIndex].RemainingHitCount += BehaviourData.HitCountModifier;

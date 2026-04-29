@@ -3,12 +3,12 @@ using System.Numerics;
 using Game.Core.BuildingBehaviour.Commands;
 using Game.Core.Buildings;
 using Game.Core.Construction.Commands;
+using Game.Core.Construction.Services;
 using Game.Core.Entities;
 using Game.Core.Interaction;
 using Game.Core.Interaction.Events;
 using Game.Core.Interaction.Requests;
 using Game.Core.Map;
-using Game.Core.Map.Services;
 using Game.Core.Player.Controller.Messages;
 using MessagePipe;
 using UnityEngine.Pool;
@@ -17,8 +17,9 @@ namespace Game.Features.Interaction
 {
     public sealed class BuildingDragHandler : IRequestHandler<StartEntityDragRequest, StartEntityDragResponse>, IDisposable
     {
-        private readonly IGameMapService mapService;
+        private readonly IGameMap gameMap;
         private readonly IBuildingRepository buildingRepository;
+        private readonly IBuildingConstructionService buildingConstructionService;
         private readonly IPublisher<EntityDragStartedMessage> entityDragStartedPublisher;
         private readonly IPublisher<EntityDragUpdatedMessage> entityDragUpdatedPublisher;
         private readonly IPublisher<EntityDragCandidateChangedMessage> entityDragCandidateChangedPublisher;
@@ -44,13 +45,13 @@ namespace Game.Features.Interaction
             
             if (draggingBuilding == null)
             {
-                int pointerCellIndex = mapService.GetCellIndex(worldPointerPosition);
+                int pointerCellIndex = gameMap.GetCellIndex(worldPointerPosition);
                 
                 if (pointerCellIndex != lastPointerCellIndex)
                 {
                     using (ListPool<IEntity>.Get(out var entities))
                     {
-                        mapService.GetEntitiesInCell(worldPointerPosition, entities);
+                        gameMap.GetEntitiesInCell(worldPointerPosition, entities);
                         var entityToDrag = entities.Find(entity => entity is IBuilding building && buildingRepository.IsPlayerBuilding(building));
                         SetDragCandidateBuilding(entityToDrag);
                     }
@@ -62,16 +63,16 @@ namespace Game.Features.Interaction
             {
                 //TODO: move to dragging entity presenter (MonoBehaviour), handle sprite draw order
                 draggingBuilding.Position = worldPointerPosition;
-                dragTargetPosition = mapService.GetEntityPlacementPosition(worldPointerPosition);
+                dragTargetPosition = gameMap.GetCellPosition(worldPointerPosition);
                 dragResult = EntityDragResult.Success;
-
-                if (mapService.IsBusyCell(dragTargetPosition) || mapService.GetCellIndex(dragStartPosition) == mapService.GetCellIndex(dragTargetPosition))
+  
+                if (!buildingConstructionService.IsBuildingConstructionAllowed(dragTargetPosition) || gameMap.GetCellIndex(dragStartPosition) == gameMap.GetCellIndex(dragTargetPosition))
                 {
                     dragResult = EntityDragResult.Failed;
                 }
                 else
                 {
-                    ReadOnlySpan<GameMapArea> placementAreas = mapService.EntityPlacementAreas;
+                    ReadOnlySpan<GameMapArea> placementAreas = gameMap.EntityPlacementAreas;
                     bool destroyBuilding = true;
 
                     for (int i = 0; i < placementAreas.Length; i++)
@@ -98,7 +99,7 @@ namespace Game.Features.Interaction
             {
                 case EntityDragResult.Success:
                     draggingBuilding.Position = dragTargetPosition;
-                    mapService.MoveEntityToOtherCell(draggingBuilding, dragTargetPosition);
+                    gameMap.MoveEntityToOtherCell(draggingBuilding, dragTargetPosition);
                     break;
 
                 case EntityDragResult.WillBeDestroyed:
@@ -132,8 +133,9 @@ namespace Game.Features.Interaction
 
         public BuildingDragHandler
         (
-            IGameMapService mapService,
+            IGameMap gameMap,
             IBuildingRepository buildingRepository,
+            IBuildingConstructionService buildingConstructionService,
             ISubscriber<PlayerPointerMoveMessage> pointerMoveSubscriber,
             ISubscriber<EntityDragEndedMessage> entityDragEndedSubscriber,
             ISubscriber<StartBuildingConstructionModeCommand> startBuildingConstructionModeSubscriber,
@@ -145,8 +147,9 @@ namespace Game.Features.Interaction
             IPublisher<int, EnableBuildingBehaviourCommand> enableBuildingBehaviourPublisher,
             IPublisher<int, DisableBuildingBehaviourCommand> disableBuildingBehaviourPublisher)
         {
-            this.mapService = mapService;
+            this.gameMap = gameMap;
             this.buildingRepository = buildingRepository;
+            this.buildingConstructionService = buildingConstructionService;
             this.entityDragStartedPublisher = entityDragStartedPublisher;
             this.entityDragUpdatedPublisher = entityDragUpdatedPublisher;
             this.entityDragCandidateChangedPublisher = entityDragCandidateChangedPublisher;
